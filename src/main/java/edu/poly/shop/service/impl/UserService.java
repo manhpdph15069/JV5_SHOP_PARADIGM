@@ -1,5 +1,6 @@
 package edu.poly.shop.service.impl;
 
+import edu.poly.shop.beans.__Login;
 import edu.poly.shop.beans.__UserModel;
 import edu.poly.shop.entities._User;
 import edu.poly.shop.repository.IUserRepository;
@@ -23,27 +24,42 @@ public class UserService implements IUserService {
     HttpSession session;
 
     @Override
-    public String login(String email, String password) {
+    public __Login login(String email, String password) {
         Optional<_User> user = findByEmail(email);
-        System.out.println(user.isPresent());
-        if (user.isPresent()) {
+        System.out.println("ssssssssssssssssssssss");
+
+        if (user.isPresent()){
             boolean checkPass = EncryptUtil.check(password, user.get().getPassword());
-            if (checkPass) {
-                session.setAttribute("username", user.get().getFullname());
-                if (user.get().getIsAdmin()==0){
-                    return "redirect:/dddd";
-                }else{
-                    return "redirect:/ssss";
-                }
-            }else {
-                session.setAttribute("message","Email hoặc mật khẩu không chính xác");
-                System.out.println("kd");
-                return "user/login";
+            if (checkPass){
+        System.out.println("ssssssssssssssssssssss");
+                session.setAttribute("username",new __Login(email,password));
+                return new __Login(email,password);
             }
-        }else {
-            return "redirect:/login";
         }
+    return null;
     }
+
+
+
+
+//        if (user.isPresent()) {
+//            boolean checkPass = EncryptUtil.check(password, user.get().getPassword());
+//            if (checkPass) {
+//                session.setAttribute("username", user.get().getFullname());
+//                if (user.get().getIsAdmin()==0){
+//                    return "redirect:/shop/paradigm/";
+//                }else{
+//                    return "redirect:/admin/paradigm/list";
+//                }
+//            }else {
+//                session.setAttribute("message","Email hoặc mật khẩu không chính xác");
+//                System.out.println("kd");
+//                return "user/login";
+//            }
+//        }else {
+//            return "redirect:/login";
+//        }
+//    }
 
     @Override
     @Query("select u from _User u where u.status=1 and u.email=?1")

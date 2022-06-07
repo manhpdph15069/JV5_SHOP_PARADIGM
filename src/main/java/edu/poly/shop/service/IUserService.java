@@ -1,5 +1,6 @@
 package edu.poly.shop.service;
 
+import edu.poly.shop.beans.__Login;
 import edu.poly.shop.beans.__UserModel;
 import edu.poly.shop.entities._User;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    String login(String email, String password);
+    __Login login(String email, String password);
 
     @Query("select u from _User u where u.status=1 and u.email=?1")
     Optional<_User> findByEmail(String email);

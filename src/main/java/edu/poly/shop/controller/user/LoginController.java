@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
     IUserService userService;
+    @Autowired
+    HttpSession session;
     @GetMapping("")
     public String loginView(Model model) {
         __Login login = new __Login();
@@ -25,6 +29,19 @@ public class LoginController {
     @PostMapping("/dn")
     public String login(@ModelAttribute("LOGINMODEL")__Login login) {
         System.out.println(login.getEmail()+login.getPassword());
-        return userService.login(login.getEmail(),login.getPassword());
+                __Login user =  userService.login(login.getEmail(),login.getPassword());
+                if (user==null){
+                    return "user/login";
+                }else{
+
+
+                    return "redirect:/admin/paradigm/list";
+                }
+
+//                Object ruri = session.getAttribute("redirect-uri");
+//                if (ruri!=null){
+//                    session.removeAttribute("redirect-uri");
+//                    return "redirect:/" ;
+//                }
     }
 }

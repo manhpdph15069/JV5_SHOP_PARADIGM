@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -47,6 +46,11 @@ public class ParadigmService implements IParadigmService {
     @Override
     public Optional<_Paradigm> findById(Integer integer) {
         return paradigmRepository.findById(integer);
+    }
+
+    @Override
+    public List<_Paradigm> findName(String name){
+        return paradigmRepository.findAllByParadigmNameContains("%"+ name + "%");
     }
 
     @Override
@@ -101,9 +105,13 @@ public class ParadigmService implements IParadigmService {
                 dto.getPrice(),
                 dto.getQuantity(),
                 new _Category(dto.getCategory_id(), ""),
-                image, crDate,
+                image,
+                dto.getDimension(),
+                dto.getMaterial(),
+                crDate,
                 new _Figure(dto.getFigure_id(), ""),
-                1);
+                1
+        );
         return paradigmRepository.save(paradigm);
     }
 

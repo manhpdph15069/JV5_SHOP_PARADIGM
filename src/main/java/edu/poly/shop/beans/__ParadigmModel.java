@@ -1,19 +1,11 @@
 package edu.poly.shop.beans;
 
-import edu.poly.shop.entities._Category;
-import edu.poly.shop.entities._Figure;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +20,6 @@ public class __ParadigmModel {
     private Integer figure_id;
     private Timestamp createDate;
     private Integer status;
+    private String dimension;
+    private Integer material;
 }

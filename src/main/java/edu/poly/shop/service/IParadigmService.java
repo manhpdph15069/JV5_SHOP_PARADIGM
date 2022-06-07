@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public interface IParadigmService {
@@ -16,6 +17,8 @@ public interface IParadigmService {
 
 
     public _Paradigm delete(Integer id);
+
+    List<_Paradigm> findName(String name);
 
     Optional<_Paradigm> findByParadigmName(String paradigmName);
 

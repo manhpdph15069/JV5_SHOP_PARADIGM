@@ -14,7 +14,7 @@
         </div>
         <div class="mb-3 col-6 col-sm-6 col-md-6">
             <label class="form-label">Mã mô hình<span class="text-danger top-100">*</span> </label>
-            <input th:field="*{id}" class="form-control" ></input>
+            <input type="number" th:field="*{id}" class="form-control" ></input>
         </div>
 
     </div>
@@ -43,6 +43,19 @@
             <input type="number" th:field="*{quantity}" class="form-control" id="quantily" name="quantity"></input>
         </div>
     </div>
+    <div class="row">
+
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label class="form-label">Chất liệu</label>
+            <select th:field="*{material}" class=" form-control" >
+                <option th:each="m : ${MATERIALS}" th:value="${m.id}" th:text="${m.materialName}"></option>
+            </select>
+        </div>
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="quantily" class="form-label">Kích thước<span class="text-danger top-100">*</span></label>
+            <input type="text" th:field="*{dimension}" class="form-control" ></input>
+        </div>
+    </div>
 
     <div class="row">
         <div class="mb-3 col-12 col-sm-12 col-md-12">
@@ -51,9 +64,22 @@
         </div>
     </div>
 
-
-    <button type="submit" class="btn btn-primary" th:text="${title}"></button>
-    <button type="reset" class="btn btn-primary">Clear</button>
-
+<div class="d-flex">
+    <div class="col-auto me-auto">
+        <button type="submit" class=" btn btn-primary" th:text="${title}"></button>
+        <button type="reset" class=" btn btn-primary">Clear</button>
+    </div>
+    <div class="col-auto d-flex">
+        <div>
+            <input  class="form-control me-2" type="search" id="findName" name="findName" placeholder="Tìm kiếm" aria-label="">
+        </div>
+        <button onclick="findByName()" class="btn btn-outline-success" type="button">Tìm</button>
+    </div>
+</div>
 </form>
+<script>
+    function findByName(){
+        window.location = '/admin/paradigm/find?name='+ document.getElementById("findName").value;
+    }
+</script>
 </html>

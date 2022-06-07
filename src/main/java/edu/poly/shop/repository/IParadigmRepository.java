@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +19,6 @@ public interface IParadigmRepository extends JpaRepository<_Paradigm,Integer> {
     @Query("select p from _Paradigm p where p.status=1 and p.paradigmName=?1")
     public Optional<_Paradigm> findByParadigmName(String paradigmName);
 
+    @Query("select e from _Paradigm e where  e.paradigmName like ?1")
+    List<_Paradigm> findAllByParadigmNameContains(String paradigmName);
 }

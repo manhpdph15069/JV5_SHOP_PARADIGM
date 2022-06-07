@@ -3,14 +3,19 @@ package edu.poly.shop.controller.admin;
 import edu.poly.shop.beans.__ParadigmModel;
 import edu.poly.shop.entities._Category;
 import edu.poly.shop.entities._Figure;
+import edu.poly.shop.entities._Material;
 import edu.poly.shop.entities._Paradigm;
 import edu.poly.shop.service.ICategoryService;
 import edu.poly.shop.service.IFigureService;
+import edu.poly.shop.service.IMaterialService;
 import edu.poly.shop.service.IParadigmService;
 import edu.poly.shop.utility.CommonConst;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +44,8 @@ public class ParadigmController {
     @Autowired
     IFigureService figureService;
     @Autowired
+    IMaterialService materialService;
+    @Autowired
     ServletContext app;
     @Autowired
     ICategoryService categoryService;
@@ -48,15 +55,11 @@ public class ParadigmController {
     HttpServletRequest request;
 
     @GetMapping("/list")
-    public String index(ModelMap model, @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber) {
+    public String index(Model model, @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber) {
         Page<_Paradigm> paradigmsPage = paradigmService.getByPage(pageNumber, CommonConst.PAGE_SIZE);
         model.addAttribute("LIST_PARADIGM", paradigmsPage);
-        __ParadigmModel paradigmModel = new __ParadigmModel();
-        model.addAttribute("PARADIGMMODEL", paradigmModel);
-        model.addAttribute("ACTION", "/admin/paradigm/saveOrUpdate");
-        model.addAttribute("title", "Thêm mới");
-        model.addAttribute("form", "admin/paradigm/create-update");
-        model.addAttribute("table", "admin/paradigm/view-paradigm");
+        modelView(model);
+        model.addAttribute("hrefPage","/admin/paradigm/list?pageNumber=");
         return "layout-admin";
     }
 
@@ -85,9 +88,13 @@ public class ParadigmController {
                         paradigm.getPrice(),
                         paradigm.getQuantity(),
                         paradigm.getCategory().getId(),
-                        multipartFileIMG, paradigm.getFigure().getId(),
+                        multipartFileIMG,
+                        paradigm.getFigure().getId(),
                         paradigm.getCreateDate(),
-                        paradigm.getStatus());
+                        paradigm.getStatus(),
+                        paradigm.getDimension(),
+                        paradigm.getMaterial()
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -105,6 +112,29 @@ public class ParadigmController {
     }
 
 
+    @RequestMapping("/find")
+    public String findName(Model model,
+                           @RequestParam (value = "name") String name,
+                           @RequestParam(name = "pageNumber", defaultValue = "0" ,required = false) Optional<Integer> pageNumber
+    ){
+        List<_Paradigm> paradigmListByName = paradigmService.findName(name);
+        Pageable pageable = PageRequest.of(pageNumber.orElse(0), CommonConst.PAGE_SIZE);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), paradigmListByName.size());
+        modelView(model);
+        model.addAttribute("LIST_PARADIGM", new PageImpl<>(paradigmListByName.subList(start, end), pageable, paradigmListByName.size()));
+        model.addAttribute("hrefPage","/admin/paradigm/find?name="+name+"&pageNumber=");
+        return "layout-admin";
+    }
+
+    public void modelView(Model model){
+        model.addAttribute("PARADIGMMODEL",  new __ParadigmModel());
+        model.addAttribute("ACTION", "/admin/paradigm/saveOrUpdate");
+        model.addAttribute("title", "Thêm mới");
+        model.addAttribute("form", "admin/paradigm/create-update");
+        model.addAttribute("table", "admin/paradigm/view-paradigm");
+    }
+
     @RequestMapping("delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
         paradigmService.delete(id);
@@ -114,6 +144,11 @@ public class ParadigmController {
     @ModelAttribute("CATEGORIES")
     public List<_Category> categories() {
         return categoryService.findAll();
+    }
+
+    @ModelAttribute("MATERIALS")
+    public List<_Material> materials() {
+        return materialService.findAll();
     }
 
     @ModelAttribute("FIGURES")
