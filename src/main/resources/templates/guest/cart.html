@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Start Content -->
+<div class="container">
+    <div class="row text-center fs-1">
+        <span class="fw-lighter">Cart</span>
+        <h2 class="fw-normal">Details</h2>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Mô hình</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng tiền</th>
+                <th>Lựa chọn</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                <tr th:each="entry : ${CART_DETAILS.values()}">
+                    <td><img th:src="@{'/getimage/'+${entry.paradigm.image }}" width="100" /></td>
+                    <td th:text="${entry.paradigm.paradigmName }"></td>
+                    <td th:text="${entry.purchasedQuantity }"></td>
+                    <td  th:text="${#numbers.formatCurrency(entry.purchasedMoney)}"></td>
+                    <td  th:text="${#numbers.formatCurrency(entry.purchasedMoney * entry.purchasedQuantity)}"></td>
+                    <td><a  th:data-id="${entry.paradigm.id}"
+                            th:data-name="${entry.paradigm.paradigmName}"
+                            onclick="showConfigDELETECART(this.getAttribute('data-id'),this.getAttribute('data-name'))"
+                            class="btn btn-danger" >Xóa</a></td>
+                </tr>
+                <!-- Modal -->
+                <div class="modal fade" id="configModalDCART" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Hủy sản phẩm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Bạn chắc chắn muốn hủy sản phẩm  <b id="productName"></b> ?
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-primary" id="yesOption">Xác nhận</a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tbody>
+        </table>
+
+        <script>
+            function showConfigDELETECART(id,name){
+                $('#productName').text(name);
+                $('#yesOption').attr('href','/shop/paradigm/delete?key='+id);
+                $('#configModalDCART').modal('show');
+
+            }
+        </script>
+
+
+        <div class="row">
+            <a class="btn btn-warning col-2 mb-4"  data-bs-toggle="modal" data-bs-target="#addOrder">Đặt hàng</a>
+            <span class="offset-6 fs-3 col-4">Tổng: <b class="text-danger" th:text="${#numbers.formatCurrency(TONGTIEN)}"> </b></span>
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addOrder" tabindex="-1" aria-labelledby="addOrderLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addOrderLabel">Xác nhận đơn hàng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn chắc chắn muốn đặt đơn hàng này?
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" href="/shop/paradigm/order/add-order" >Xác nhận</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- End Content -->
+
+</html>

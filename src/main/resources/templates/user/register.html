@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="container">
+<h1 class="text-primary text-center">Đăng ký</h1>
+<form method="post" th:action="${ACTION}" th:object="${USERMODEL}" >
+    <div class="row">
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="nameProduct" class="form-label">Họ & tên<span class="text-danger top-100">*</span> </label>
+            <input th:field="*{fullname}" class="form-control" id="nameProduct" name="paradigmName"></input>
+        </div>
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label class="form-label">SĐT<span class="text-danger top-100">*</span> </label>
+            <input th:field="*{phone}" class="form-control" ></input>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="price" class="form-label">Email<span class="text-danger top-100">*</span></label>
+            <input th:field="*{email}" type="email" class="form-control" id="price" name="price"></input>
+        </div>
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="quantily" class="form-label">Địa chỉ<span class="text-danger top-100">*</span></label>
+            <input type="text" th:field="*{address}" class="form-control" id="quantily" name="quantity"></input>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="price" class="form-label">Password<span class="text-danger top-100">*</span></label>
+            <input th:field="*{password}" type="password" class="form-control"></input>
+        </div>
+        <div class="mb-3 col-6 col-sm-6 col-md-6">
+            <label for="quantily" class="form-label">Confirm password<span class="text-danger top-100">*</span></label>
+            <input type="password" th:field="*{confirm_password}" class="form-control" id="quantily" name="quantity"></input>
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" >Gửi</button>
+    <button type="reset" class="btn btn-primary">Clear</button>
+
+</form>
+</div>
+</html>

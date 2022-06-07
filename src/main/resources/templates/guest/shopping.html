@@ -1,0 +1,98 @@
+
+<div class="container py-5">
+    <div class="row">
+
+        <div class="col-lg-3">
+           <a class="text-decoration-none fs-2 text-dark" th:href="@{'/shop/paradigm/'}">Danh mục</a>
+
+            <div class="card border-0" style="width: 18rem;">
+                <ul class="list-group  list-group-flush">
+                        <li th:each="c : ${CATEGORIES}" class="list-group-item border-0">
+                            <a class="fs-4 text-dark nav-link"  th:href="@{'/shop/paradigm/?findCid='+${c.id}}" th:text="${c.categoryName}"></a>
+                        </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-inline shop-top-menu pb-3 pt-1">
+                        <li class="list-inline-item">
+<!--                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/shop/paradigm/}">All</a>-->
+                            <form class="d-flex" role="search">
+                                <input height="2px" class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Tìm</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <select onchange="javascript:hrefFind(this)" class="form-control">
+                             <option  th:each="f : ${FIGURES}" th:text="${f.figureName}" th:value="${f.id}"></option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                    <div th:each="p : ${LIST_PARADIGM.content}" class="col-md-4">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <div class="card rounded-0">
+                                <img class="card-img rounded-0 img-fluid" th:src="@{'/getimage/'+${p.image}}">
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+
+                                        <li><a class="btn btn-success text-white mt-2" th:href="@{'/shop/paradigm/addtoCart/'+${p.id}}"><i
+                                                class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <a href="shop-single.html" class="h3 text-decoration-none" th:text="${p.paradigmName}"></a>
+                                <ul class="text-center w-100 list-unstyled d-flex justify-content-between mb-0">
+<!--                                    <li th:text="${'Nhân vật: '+ p.figure.figureName}"></li>-->
+                                    <li class="pt-2">
+                                        <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                    </li>
+                                </ul>
+<!--                                <ul class="list-unstyled d-flex justify-content-center mb-1">-->
+<!--                                    <li>-->
+<!--                                        <i class="text-warning fa fa-star"></i>-->
+<!--                                        <i class="text-warning fa fa-star"></i>-->
+<!--                                        <i class="text-warning fa fa-star"></i>-->
+<!--                                        <i class="text-muted fa fa-star"></i>-->
+<!--                                        <i class="text-muted fa fa-star"></i>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+                                <p class="text-center mb-0" th:text="${#numbers.formatCurrency(p.price)}"></p>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div div="row">
+                <ul  class="pagination pagination-lg justify-content-end">
+                    <li th:each="i :${#numbers.sequence(0,LIST_PARADIGM.totalPages -1)}" class="page-item">
+                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" th:href="@{${hrefPage}+${i}}" th:text="${i +1}"
+                           tabindex="-1"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function hrefFind(id){
+        window.location =  "http://localhost:8080/shop/paradigm/?findFid="+id.value;
+    }
+</script>
+<!-- End Content -->

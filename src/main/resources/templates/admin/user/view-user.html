@@ -1,0 +1,92 @@
+<h1 class="text-primary text-center" xmlns="http://www.w3.org/1999/html">Danh sách</h1>
+            <div th:if="${ LIST_USER  == null}">
+                <p class="alert alert-warning">Không có dữ liệu</p>
+            </div>
+
+            <div th:if ="${ LIST_USER != null }">
+                <table class="table">
+                    <thead class="table-dark text-center">
+                    <th>Họ tên</th>
+                    <th>SĐT</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày tạo</th>
+                    <th colspan="2">Thao tác</th>
+                    </thead>
+                    <tbody class="text-center">
+
+                        <!--/*@thymesVar id="content" type="lombok"*/-->
+                        <tr th:each="u : ${LIST_USER.content}">
+                            <td th:text="${u.fullname}"></td>
+                            <td th:text="${u.phone}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.address}"></td>
+                            <td th:text="${#dates.format(u.createDate, 'dd-MM-yyyy') }"></td>
+
+                            <td>
+                                <a th:href="@{'/admin/user/edit/'+${u.email}}" class="btn btn-info">Cập nhập</a>
+                            </td>
+                            <td>
+                                <a
+                                        th:data-id="${u.id}"
+                                        th:data-name="${u.fullname}"
+                                        onclick="showConfigUser(this.getAttribute('data-id'),this.getAttribute('data-name'))"
+                                        class="btn btn-danger">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <script>
+                    function showConfigUser(id,name){
+                        $('#userName').text(name);
+                        $('#yesOption').attr('href','/admin/user/delete/'+id);
+                        $('#configModalID').modal('show');
+                    }
+                </script>
+
+                <div class="modal fade" id="configModalID" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thông Báo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Bạn chắc chắn muốn xóa "<b id="userName"></b>"???
+                            </div>
+                            <div class="modal-footer">
+
+                                <a id="yesOption" class="btn btn-danger" type="button"> Xác
+                                    nhận</a>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div div="row">
+                    <ul  class="pagination pagination-lg justify-content-end">
+                        <li th:each="i :${#numbers.sequence(0,LIST_USER.totalPages -1)}" class="page-item">
+                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" th:href="@{'/paradigm/list?pageNumber='+${i}}" th:text="${i +1}"
+                               tabindex="-1"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        <!--    <%&#45;&#45;    End_Body&#45;&#45;%>-->
+
+
+    <!--<%&#45;&#45;EndBody&#45;&#45;%>-->
+<!--    <div th:replace="layout :: footer"></div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
