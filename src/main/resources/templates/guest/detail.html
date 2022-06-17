@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="primary" class="content-area container">
+<div class="row">
+    <div class="col-md-10 offset-md-1 bcf-main-content">
+        <main id="main" class="site-main">
+
+            <div class="woocommerce-notices-wrapper"></div>
+            <div id="product-2232"
+                 class="product type-product post-2232 status-publish first instock product_cat-one-piece product_tag-bandai product_tag-banpresto product_tag-chinh-hang product_tag-nami product_tag-real has-post-thumbnail sale shipping-taxable purchasable product-type-simple">
+
+                <div class="product-summary-wrap">
+
+
+                    <img width="450" height="600"
+                         th:src="@{'/getimage/'+${PARADIGM_DETAIL.image}}">
+
+
+                    <div class="summary entry-summary">
+                        <h1 class="product_title entry-title" th:text="${PARADIGM_DETAIL.paradigmName}"></h1>
+
+
+                        <div class="product-price-wrap">
+                            <p class="price float-left single-price">
+                                <del aria-hidden="true"></del>
+                                <ins><span class="woocommerce-Price-amount amount"><bdi><span
+                                        class="woocommerce-Price-currencySymbol"></span>
+                                <th:block th:text="${#numbers.formatCurrency(PARADIGM_DETAIL.price)}"></th:block>
+                                </bdi></span>
+                                </ins>
+                            </p>
+                            <div class="float-right"></div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="woocommerce-product-details__short-description">
+                            <ul>
+                                <li>Nhân Vật : [[${PARADIGM_DETAIL.figure.figureName}]]</li>
+                                <li>Kích Thước: [[${PARADIGM_DETAIL.dimension}]]</li>
+                                <li>Chất Liệu : [[${PARADIGM_DETAIL.material.materialName}]]</li>
+                                <li>Tình trạng: Like New, Nobox</li>
+                            </ul>
+                        </div>
+
+
+                        <form class="cart" th:action="'/shop/paradigm/addtoCart/'+${PARADIGM_DETAIL_ID}"
+                              method="post" enctype='multipart/form-data'>
+
+
+                            <button type="submit" name="add-to-cart" value="2232"
+                                    class="single_add_to_cart_button alt btn theme-btn-icon bg-btn">Thêm vào giỏ
+                                hàng<i class="icofont-cart-alt"></i></button>
+
+                            <div class="quantity">
+                                <button type="button" class="plus"><i class="icofont-plus"></i></button>
+                                <label
+                                        class="screen-reader-text" for="quantity_62a1708c7d786">[Chính Hãng]
+                                    Banpresto Nami World Colosseum số lượng</label>
+                                <input type="number" id="quantity_62a1708c7d786" class="input-text qty text"
+                                       step="1" min="1" max="" name="quantity" value="1" title="SL" size="4"
+                                       placeholder="" inputmode="numeric" autocomplete="off"/>
+                                <button type="button" class="minus"><i class="icofont-minus"></i></button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                        <div class="product_meta">
+									<span class="posted_in">Danh mục: <a href="#" rel="tag" th:text="${PARADIGM_DETAIL.category.categoryName}">Mô Hình One
+											Piece</a></span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    </div>
+</div>
+</html>

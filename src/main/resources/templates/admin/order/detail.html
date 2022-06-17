@@ -1,0 +1,17 @@
+<table class="table">
+    <thead class="table-dark text-center">
+
+    <th>Mô hình</th>
+    <th>Số lượng</th>
+    <th>Giá</th>
+    <th>Tổng</th>
+    </thead>
+    <tbody class="text-center">
+    <!--/*@thymesVar id="content" type="lombok"*/-->
+    <tr th:each="ot : ${ORDERDETAIL.orderdetails}">
+        <td th:text="${ot.paradigm.paradigmName}"></td>
+        <td th:text="${ot.purchasedQuantity}"></td>
+        <td th:text="${ot.purchasedMoney}"></td>
+        <td  th:text="${#numbers.formatCurrency(ot.purchasedQuantity * ot.purchasedMoney)}"></td>
+    </tbody>
+</table>

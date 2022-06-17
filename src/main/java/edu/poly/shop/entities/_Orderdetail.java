@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "orderdetail")
-
 public class _Orderdetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +30,7 @@ public class _Orderdetail {
     private Integer purchasedQuantity;
 
     @Column(name = "purchasedmoney")
-    private Double purchasedMoney;
+    private BigDecimal purchasedMoney;
 
 
 }

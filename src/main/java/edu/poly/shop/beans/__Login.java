@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class __Login {
     private String email;
     private String password;
+    private Integer isAdmin;
 }

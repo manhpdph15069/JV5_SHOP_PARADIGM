@@ -1,0 +1,39 @@
+<div class="row text-center">
+<h1 class="text-primary">Thống kê</h1>
+    <div class="col-6">
+        <table class="table table-primary">
+            <thead>
+            <tr>
+                <th scope="col">Mã SP</th>
+                <th scope="col">Mô hình</th>
+                <th scope="col">Đã bán</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${PARADIGM_STATSBC}">
+                <td th:text="${p[0]}"></td>
+                <td th:text="${p[1]}"></td>
+                <td th:text="${p[2]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-6">
+        <table class="table table-info">
+            <thead>
+            <tr>
+                <th scope="col">Mã SP</th>
+                <th scope="col">Mô hình</th>
+                <th scope="col">Doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${PARADIGM_STATSDT}">
+                <td th:text="${p[0]}"></td>
+                <td th:text="${p[1]}"></td>
+                <td  th:text="${#numbers.formatCurrency(p[2])}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

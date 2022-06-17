@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,16 +17,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "paradigm")
-public class _Paradigm {
+public class _Paradigm implements Serializable {
+
     @Id
-    @Column(name = "paradigmID", nullable = false)
+    @Column(name = "paradigmID")
     private Integer id;
 
     @Column(name = "paradigmname")
     private String paradigmName;
 
     @Column(name = "price")
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -40,8 +42,10 @@ public class _Paradigm {
     @Column(name = "dimension")
     private String dimension;
 
-    @Column(name = "material")
-    private Integer material;
+
+    @ManyToOne
+    @JoinColumn(name = "material")
+    private _Material material;
 
     @CreationTimestamp
     @Column(name = "createdate")
@@ -61,7 +65,8 @@ public class _Paradigm {
     @OneToMany(mappedBy = "paradigm")
     private List<_Orderdetail> orderdetails;
 
-    public _Paradigm(Integer id, String paradigmName, Double price, Integer quantity, _Category category, String image, String dimension, Integer material, Timestamp createDate, _Figure figure, Integer status) {
+    public _Paradigm(Integer id, String paradigmName, BigDecimal price, Integer quantity, _Category category,
+                     String image, String dimension, _Material material, Timestamp createDate, _Figure figure, Integer status) {
         this.id = id;
         this.paradigmName = paradigmName;
         this.price = price;

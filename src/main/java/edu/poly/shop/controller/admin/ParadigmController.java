@@ -12,29 +12,21 @@ import edu.poly.shop.service.IParadigmService;
 import edu.poly.shop.utility.CommonConst;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,9 +57,26 @@ public class ParadigmController {
 
 
     @PostMapping("/saveOrUpdate")
-    public String save(Model model, @ModelAttribute("PARADIGMMODEL") __ParadigmModel dto) {
-        paradigmService.insert(dto);
-        model.addAttribute("success","Thêm mới sản phẩm "+dto.getParadigmName()+" thành công");
+    public String save(
+            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            Model model,
+            @Valid @ModelAttribute("PARADIGMMODEL") __ParadigmModel dto,
+            BindingResult result,
+            RedirectAttributes attributes) {
+        if (result.hasErrors()){
+            Page<_Paradigm> paradigmsPage = paradigmService.getByPage(pageNumber, CommonConst.PAGE_SIZE);
+            model.addAttribute("LIST_PARADIGM", paradigmsPage);
+            model.addAttribute("PARADIGMMODEL",dto);
+            model.addAttribute("ACTION", "/admin/paradigm/saveOrUpdate");
+            model.addAttribute("title", "Thêm mới");
+            model.addAttribute("form", "admin/paradigm/create-update");
+            model.addAttribute("table", "admin/paradigm/view-paradigm");
+            return "layout-admin";
+        }else {
+//        attributes.addFlashAttribute("messageTC","Thêm mới mô hình thành công");
+        paradigmService.insert(dto,attributes);
+        }
+
         return "redirect:/admin/paradigm/list";
     }
 
@@ -85,7 +94,7 @@ public class ParadigmController {
                         IOUtils.toByteArray(inputStream));
                 dto = new __ParadigmModel(paradigm.getId(),
                         paradigm.getParadigmName(),
-                        paradigm.getPrice(),
+                       paradigm.getPrice(),
                         paradigm.getQuantity(),
                         paradigm.getCategory().getId(),
                         multipartFileIMG,
@@ -93,7 +102,7 @@ public class ParadigmController {
                         paradigm.getCreateDate(),
                         paradigm.getStatus(),
                         paradigm.getDimension(),
-                        paradigm.getMaterial()
+                        paradigm.getMaterial().getId()
                 );
             } catch (Exception e) {
                 e.printStackTrace();

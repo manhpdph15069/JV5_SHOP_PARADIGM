@@ -38,7 +38,7 @@ public class _Order {
     private Integer status =1;
 
     @Column(name = "total")
-    private Double total;
+    private BigDecimal total;
 
     @OneToMany(mappedBy = "order")
     private List<_Orderdetail> orderdetails;

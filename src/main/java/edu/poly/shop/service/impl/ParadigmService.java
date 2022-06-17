@@ -3,6 +3,7 @@ package edu.poly.shop.service.impl;
 import edu.poly.shop.beans.__ParadigmModel;
 import edu.poly.shop.entities._Category;
 import edu.poly.shop.entities._Figure;
+import edu.poly.shop.entities._Material;
 import edu.poly.shop.entities._Paradigm;
 import edu.poly.shop.repository.ICategoryRepository;
 import edu.poly.shop.repository.IFigureRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -44,13 +46,18 @@ public class ParadigmService implements IParadigmService {
     }
 
     @Override
+    public List<_Paradigm> findAll() {
+        return paradigmRepository.findAll();
+    }
+
+    @Override
     public Optional<_Paradigm> findById(Integer integer) {
         return paradigmRepository.findById(integer);
     }
 
     @Override
-    public List<_Paradigm> findName(String name){
-        return paradigmRepository.findAllByParadigmNameContains("%"+ name + "%");
+    public List<_Paradigm> findName(String name) {
+        return paradigmRepository.findAllByParadigmNameContains("%" + name + "%");
     }
 
     @Override
@@ -60,14 +67,14 @@ public class ParadigmService implements IParadigmService {
 
 
     @Override
-    public _Paradigm insert(__ParadigmModel dto) {
+    public _Paradigm insert(__ParadigmModel dto, RedirectAttributes attributes) {
         Optional<_Paradigm> optional_pardigm = findById(dto.getId());
         _Paradigm paradigm = null;
         String image = "NoImage.png";
         Timestamp crDate = dto.getCreateDate();
         Path path = Paths.get("uploads/");
         if (optional_pardigm.isPresent()) {
-            //save
+            //update
             crDate = optional_pardigm.get().getCreateDate();
             if (dto.getImage().isEmpty()) {
                 image = optional_pardigm.get().getImage();
@@ -81,6 +88,7 @@ public class ParadigmService implements IParadigmService {
                     e.printStackTrace();
                 }
             }
+            attributes.addFlashAttribute("messageTC","Cập nhập sản phẩm "+dto.getParadigmName()+" có mã sản phẩm là "+dto.getId()+" thành công");
         } else {
 //            add
             if (!dto.getImage().isEmpty()) {
@@ -99,6 +107,7 @@ public class ParadigmService implements IParadigmService {
                     }
                 }
             }
+            attributes.addFlashAttribute("messageTC","Thêm mới sản phẩm "+dto.getParadigmName()+" thành công");
         }
         paradigm = new _Paradigm(dto.getId(),
                 dto.getParadigmName(),
@@ -107,7 +116,7 @@ public class ParadigmService implements IParadigmService {
                 new _Category(dto.getCategory_id(), ""),
                 image,
                 dto.getDimension(),
-                dto.getMaterial(),
+                new _Material(dto.getMaterial_id(), ""),
                 crDate,
                 new _Figure(dto.getFigure_id(), ""),
                 1

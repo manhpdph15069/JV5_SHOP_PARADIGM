@@ -19,7 +19,7 @@ public class AdminAuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        session.setAttribute("redirect-uri",request.getRequestURI());
+//        session.setAttribute("redirect-uri",request.getRequestURI());
         response.sendRedirect("/login");
         return false;
     }

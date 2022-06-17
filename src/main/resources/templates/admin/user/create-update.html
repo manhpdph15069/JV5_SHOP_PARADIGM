@@ -4,31 +4,37 @@
         <div class="mb-3 col-6 col-sm-6 col-md-6">
             <label for="nameProduct" class="form-label">Họ & tên<span class="text-danger top-100">*</span> </label>
             <input th:field="*{fullname}" class="form-control" id="nameProduct" name="paradigmName"></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('fullname')}" >Không được để trống họ tên</p>
         </div>
         <div class="mb-3 col-6 col-sm-6 col-md-6">
             <label class="form-label">SĐT<span class="text-danger top-100">*</span> </label>
             <input th:field="*{phone}" class="form-control" ></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('phone')}">Không được để trống số điện thoại</p>
         </div>
     </div>
     <div class="row">
         <div class="mb-3 col-6 col-sm-6 col-md-6">
             <label for="price" class="form-label">Email<span class="text-danger top-100">*</span></label>
             <input th:field="*{email}" type="email" class="form-control" id="price" name="price"></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('email')}" >Không được để trống email</p>
         </div>
         <div class="mb-3 col-6 col-sm-6 col-md-6">
-            <label for="quantily" class="form-label">Địa chỉ<span class="text-danger top-100">*</span></label>
-            <input type="text" th:field="*{address}" class="form-control" id="quantily" name="quantity"></input>
+            <label class="form-label">Địa chỉ<span class="text-danger top-100">*</span></label>
+            <input type="text" th:field="*{address}" class="form-control" ></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('address')}" >Không được để trống địa chỉ</p>
         </div>
 
     </div>
     <div class="row">
         <div class="mb-3 col-6 col-sm-6 col-md-6">
-            <label for="price" class="form-label">Password<span class="text-danger top-100">*</span></label>
+            <label for="price" class="form-label">Mật khẩu<span class="text-danger top-100">*</span></label>
             <input th:field="*{password}" type="password" class="form-control"></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('password')}">Không được để trống mật khẩu</p>
         </div>
         <div class="mb-3 col-6 col-sm-6 col-md-6">
-            <label for="quantily" class="form-label">Confirm password<span class="text-danger top-100">*</span></label>
-            <input type="password" th:field="*{confirm_password}" class="form-control" id="quantily" name="quantity"></input>
+            <label  class="form-label">Xác nhận<span class="text-danger top-100">*</span></label>
+            <input type="password" th:field="*{confirm_password}" class="form-control" ></input>
+            <p  class="text-danger" th:if="${#fields.hasErrors('confirm_password')}">Không được để trống</p>
         </div>
     </div>
 

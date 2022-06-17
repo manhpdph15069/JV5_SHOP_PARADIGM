@@ -1,7 +1,14 @@
 package edu.poly.shop.entities;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.List;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "material")
 public class _Material {
@@ -13,20 +20,11 @@ public class _Material {
     @Column(name = "material_name", length = 200)
     private String materialName;
 
-    public Integer getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "material")
+    private List<_Paradigm> paradigmList;
 
-    public void setId(Integer id) {
+    public _Material(Integer id, String materialName) {
         this.id = id;
-    }
-
-    public String getMaterialName() {
-        return materialName;
-    }
-
-    public void setMaterialName(String materialName) {
         this.materialName = materialName;
     }
-
 }

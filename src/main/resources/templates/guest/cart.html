@@ -1,87 +1,190 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Start Content -->
-<div class="container">
-    <div class="row text-center fs-1">
-        <span class="fw-lighter">Cart</span>
-        <h2 class="fw-normal">Details</h2>
-    </div>
-    <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Ảnh</th>
-                <th>Mô hình</th>
-                <th>Số lượng</th>
-                <th>Giá</th>
-                <th>Tổng tiền</th>
-                <th>Lựa chọn</th>
-            </tr>
-            </thead>
-            <tbody>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-                <tr th:each="entry : ${CART_DETAILS.values()}">
-                    <td><img th:src="@{'/getimage/'+${entry.paradigm.image }}" width="100" /></td>
-                    <td th:text="${entry.paradigm.paradigmName }"></td>
-                    <td th:text="${entry.purchasedQuantity }"></td>
-                    <td  th:text="${#numbers.formatCurrency(entry.purchasedMoney)}"></td>
-                    <td  th:text="${#numbers.formatCurrency(entry.purchasedMoney * entry.purchasedQuantity)}"></td>
-                    <td><a  th:data-id="${entry.paradigm.id}"
-                            th:data-name="${entry.paradigm.paradigmName}"
-                            onclick="showConfigDELETECART(this.getAttribute('data-id'),this.getAttribute('data-name'))"
-                            class="btn btn-danger" >Xóa</a></td>
-                </tr>
-                <!-- Modal -->
-                <div class="modal fade" id="configModalDCART" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Hủy sản phẩm</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Bạn chắc chắn muốn hủy sản phẩm  <b id="productName"></b> ?
-                            </div>
-                            <div class="modal-footer">
-                                <a class="btn btn-primary" id="yesOption">Xác nhận</a>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            </div>
+
+<!--<th:block th:if="${session.messageCT != null}">-->
+<!--    <div class="alert alert-danger text-center fs-4"-->
+<!--         th:text="${session.messageCT}"></div>-->
+<!--</th:block>-->
+<!--<th:block th:if="${session.messageCCG != null}">-->
+<!--    <div class="alert alert-danger text-center fs-4"-->
+<!--         th:text="${session.messageCCG}"></div>-->
+<!--</th:block>-->
+<th:block th:if="${session.errorCCH != null}">
+    <div class="alert alert-danger text-center fs-4"
+         th:text="${session.errorCCH}"></div>
+</th:block>
+
+
+<div th:if="${CART_DETAILS !=null}" class="row mx-5 container">
+
+    <div th:if="${check == false}">
+        <h1 class="text-primary text-center">Thông tin thanh toán</h1>
+        <form method="post" th:action="@{'/order/add-order'}" th:object="${CUSTOMER}">
+            <div class="row">
+                <div class="mb-3 col-6 col-sm-6 col-md-6">
+                    <label for="nameProduct" class="form-label">Họ & tên<span class="text-danger top-100">*</span>
+                    </label>
+                    <input th:field="*{fullname}" class="form-control" id="nameProduct" name="paradigmName"></input>
+                    <p  class="text-danger" th:if="${#fields.hasErrors('fullname')}" >Không được để trống họ tên</p>
+                </div>
+                <div class="mb-3 col-6 col-sm-6 col-md-6">
+                    <label class="form-label">SĐT<span class="text-danger top-100">*</span> </label>
+                    <input th:field="*{phone}" class="form-control"></input>
+                    <p class="text-danger" th:if="${#fields.hasErrors('phone')}" >Không được để trống và tối đa 10 số</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-6 col-sm-6 col-md-6">
+                    <label for="price" class="form-label">Email<span class="text-danger top-100">*</span></label>
+                    <input th:field="*{email}" type="email" class="form-control" id="price" name="price"></input>
+                    <p  class="text-danger" th:if="${#fields.hasErrors('email')}" >Không được để trống họ tên</p>
+                </div>
+                <div class="mb-3 col-6 col-sm-6 col-md-6">
+                    <label for="quantily" class="form-label">Địa chỉ<span class="text-danger top-100">*</span></label>
+                    <input type="text" th:field="*{address}" class="form-control" id="quantily" name="quantity"></input>
+                    <p  class="text-danger" th:if="${#fields.hasErrors('address')}" >Không được để trống họ tên</p>
+                </div>
+
+            </div>
+
+            <div class="text-center mb-5">
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addOrderCus">Đặt hàng</a>
+                <button type="reset" class="btn btn-warning">Clear</button>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addOrderCus" tabindex="-1" aria-labelledby="addOrderLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addOrderLabelCus">Xác nhận đơn hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn chắc chắn muốn đặt đơn hàng này?
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit">Xác nhận</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         </div>
                     </div>
                 </div>
-            </tbody>
-        </table>
+            </div>
+        </form>
+    </div>
 
+    <div class="row">
+        <a th:href="@{'/shop/paradigm/cart/clear'}" class="col-2 btn btn-primary float-start">Clear</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Ảnh</th>
+            <th>Mô hình</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Tạm tính</th>
+            <th>Lựa chọn</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="entry : ${CART_DETAILS}">
+            <form th:action="@{'/shop/paradigm/update'}" method="post">
+
+                <input type="hidden" name="id" th:value="${entry.productId}">
+                <tr>
+                    <td><img th:src="@{'/getimage/'+${entry.image }}" width="100"/></td>
+                    <td th:text="${entry.namePro }"></td>
+                    <td>
+                        <input type="number" name="quantity" th:value="${entry.qty}" onblur="this.form.submit()"
+                               style="width: 100px;">
+                    </td>
+                    <th:block th:each="p : ${LIST_PARADIGM}">
+                        <th:block th:if="${p.id == entry.productId}">
+                            <td  th:text="${#numbers.formatCurrency(p.price)}"></td>
+                            <td th:text="${#numbers.formatCurrency(p.price * entry.qty)}"></td>
+                        </th:block>
+                    </th:block>
+                    <td colspan="2"><a th:data-id="${entry.productId}"
+                                       th:data-name="${entry.namePro}"
+                                       onclick="showConfigDELETECART(this.getAttribute('data-id'),this.getAttribute('data-name'))"
+                                       class="btn btn-danger">Xóa</a></td>
+                </tr>
+            </form>
+        </th:block>
         <script>
-            function showConfigDELETECART(id,name){
+            function showConfigDELETECART(id, name) {
                 $('#productName').text(name);
-                $('#yesOption').attr('href','/shop/paradigm/delete?key='+id);
+                $('#yesOption').attr('href', '/shop/paradigm/delete?key=' + id);
                 $('#configModalDCART').modal('show');
-
             }
         </script>
+        </tbody>
+    </table>
 
 
-        <div class="row">
-            <a class="btn btn-warning col-2 mb-4"  data-bs-toggle="modal" data-bs-target="#addOrder">Đặt hàng</a>
-            <span class="offset-6 fs-3 col-4">Tổng: <b class="text-danger" th:text="${#numbers.formatCurrency(TONGTIEN)}"> </b></span>
-
+    <!-- Modal -->
+    <div class="modal fade" id="configModalDCART" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hủy sản phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn chắc chắn muốn hủy sản phẩm <b id="productName"></b> ?
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" id="yesOption">Xác nhận</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="addOrder" tabindex="-1" aria-labelledby="addOrderLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addOrderLabel">Xác nhận đơn hàng</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Bạn chắc chắn muốn đặt đơn hàng này?
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-primary" href="/shop/paradigm/order/add-order" >Xác nhận</a>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    </div>
+    </div>
+
+
+    <div class="row">
+        <div th:if="${check}" class="text-center">
+            <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addOrder">Đặt hàng</a>
+        </div>
+        <span class="text-center pt-4 fs-3 ">Tổng: <b class="text-danger"
+                                                      th:text="${#numbers.formatCurrency(TONGTIEN)}"> </b></span>
+
+    </div>
+    <!--        <table cellspacing="0" class="shop_table shop_table_responsive">-->
+    <!--            <tr  class="cart-subtotal">-->
+    <!--                <td >-->
+    <!--                    <button type="submit" class="button" name="update_cart"-->
+    <!--                            value="Cập nhật giỏ hàng">Đặt hàng</button>-->
+    <!--                    <input type="hidden" id="woocommerce-cart-nonce"-->
+    <!--                           name="woocommerce-cart-nonce" value="41cc3c5fc7" /><input-->
+    <!--                        type="hidden" name="_wp_http_referer" value="/cart/" />-->
+    <!--                </td>-->
+    <!--                <th>Tổng</th>-->
+    <!--                <td data-title="Tổng"><strong><span-->
+    <!--                        class="woocommerce-Price-amount amount"><bdi><span-->
+    <!--                        class="woocommerce-Price-currencySymbol">&#8363;</span>7.000.000</bdi></span></strong>-->
+    <!--                </td>-->
+    <!--            </tr>-->
+    <!--        </table>-->
+    <!-- Modal -->
+    <div class="modal fade" id="addOrder" tabindex="-1" aria-labelledby="addOrderLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addOrderLabel">Xác nhận đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn chắc chắn muốn đặt đơn hàng này?
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="/order/add-order">Xác nhận</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>

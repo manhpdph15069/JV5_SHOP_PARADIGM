@@ -20,133 +20,143 @@
 </head>
 <body>
 <div class="container p-0">
-<header th:fragment="header" class="row">
-    <div class="col-12 img-thumbnail border-0 ">
-        <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner1-1.png" style="width: 100%;" alt="">
+    <header th:fragment="header" class="row">
+        <div class="col-12 img-thumbnail border-0 ">
+            <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner1-1.png" style="width: 100%;" alt="">
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Start Menu-->
+    <nav th:fragment="menu" class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+            <a class="navbar-brand ms-3 mt-2" href="#">MANAGER</a>
+
+            <div class="mt-4 mx-auto text-center">
+
+                <a class="navbar-brand text-black" th:href="@{'/admin/paradigm/list'}">Sản phẩm</a>
+                <a class="navbar-brand text-black" th:href="@{'/admin/user/list'}">&nbsp;Người dùng</a>
+                <a class="navbar-brand text-black" th:href="@{'/admin/order/index'}">Đơn hàng</a>
+                <a class="navbar-brand text-black" th:href="@{'/tk/'}">Thống kê</a>
+            </div>
+            <button class="navbar-toggler mt-3" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                 aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">MANAGER</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <!--                    <li class="nav-item dropdown">-->
+                        <!--                        <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button"-->
+                        <!--                           data-bs-toggle="dropdown" aria-expanded="false">-->
+                        <!--                            Tài khoản-->
+                        <!--                        </a>-->
+                        <!--                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">-->
+                        <!--                            <li><a class="dropdown-item" href="/Assignment_SOF3011/login">Đăng nhập</a></li>-->
+                        <!--                            <li><a class="dropdown-item" href="#">Đăng ký</a></li>-->
+                        <!--                            <li><a class="dropdown-item" href="#">Quên mật khẩu</a></li>-->
+                        <!--                            <li>-->
+                        <!--                                <hr class="dropdown-divider">-->
+                        <!--                            </li>-->
+                        <!--                            <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#logout">Đăng-->
+                        <!--                                xuất</a></li>-->
+
+                        <!--                        </ul>-->
+                        <!--                    </li>-->
+
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href="@{'/list'}">Sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href="@{'/admin/user/list'}">Người dùng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="modal" data-bs-target="#logout" class="nav-link active" aria-current="page" th:href="@{'/logout'}">Đăng xuất</a>
+                        </li>
+                        <!--                    <li class="nav-item dropdown">-->
+                        <!--                        <a class="nav-link dropdown-toggle" href="#" id="danhmucDropdown" role="button"-->
+                        <!--                           data-bs-toggle="dropdown" aria-expanded="false">-->
+                        <!--                            Danh mục-->
+                        <!--                        </a>-->
+                        <!--                        <ul class="dropdown-menu" aria-labelledby="danhmucDropdown">-->
+                        <!--                            <li><a class="dropdown-item" href="#">Áo</a></li>-->
+                        <!--                            <li><a class="dropdown-item" href="#">Quần</a></li>-->
+                        <!--                            <li><a class="dropdown-item" href="#">Dép</a></li>-->
+                        <!--                            <li>-->
+                        <!--                                <hr class="dropdown-divider">-->
+                        <!--                            </li>-->
+                        <!--                            <li><a class="dropdown-item" href="#">Tất cả</a></li>-->
+                        <!--                        </ul>-->
+                        <!--                    </li>-->
+                        <!--                    <li class="nav-item">-->
+                        <!--                        <%&#45;&#45;                        <a class="nav-link active" aria-current="page" href="#">Giỏ hàng</a>&#45;&#45;%>-->
+                        <!--                        <a type="button" href="#" class="nav-link active position-relative">-->
+                        <!--                            Giỏ hàng-->
+                        <!--                            <span class="position-absolute  translate-middle badge rounded-pill bg-danger">-->
+                        <!--                                5-->
+                        <!--                            <span class="visually-hidden">unread messages</span>-->
+                        <!--                        </span>-->
+                        <!--                        </a>-->
+                        <!--                    </li>-->
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    <div class="modal" id="logout" tabindex="-1" aria-labelledby="logoutLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutLabel">Đăng xuất</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn chắc chắn muốn đăng xuất ?
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" th:href="@{'/logout'}">Yes</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
     </div>
-</header>
-<!-- End Header -->
+    <!-- End Menu -->
 
-<!-- Start Menu-->
-<nav th:fragment="menu" class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <div class="row">
-
-        </div>
-        <a class="navbar-brand ms-3 mt-2" href="#">&nbsp; HNAM</a>
-
-        <div class="mt-4 mx-auto text-center">
-
-            <a class="navbar-brand text-black" href="/Assignment_SOF3011/admin/users/create">Tài khoản</a>
-            <a class="navbar-brand text-black" href="/Assignment_SOF3011/admin/category/create">&nbsp;Danh mục</a>
-            <a class="navbar-brand text-black" href="/Assignment_SOF3011/admin/product/create">Sản phẩm</a>
-            <a class="navbar-brand text-black" href="/Assignment_SOF3011/admin/order/index">Đơn hàng</a>
-        </div>
-        <button class="navbar-toggler mt-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">HNAM</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Tài khoản
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                            <li><a class="dropdown-item" href="/Assignment_SOF3011/login">Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng ký</a></li>
-                            <li><a class="dropdown-item" href="#">Quên mật khẩu</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#logout">Đăng
-                                xuất</a></li>
-
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="danhmucDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Danh mục
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="danhmucDropdown">
-                            <li><a class="dropdown-item" href="#">Áo</a></li>
-                            <li><a class="dropdown-item" href="#">Quần</a></li>
-                            <li><a class="dropdown-item" href="#">Dép</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Tất cả</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <%--                        <a class="nav-link active" aria-current="page" href="#">Giỏ hàng</a>--%>
-                        <a type="button" href="#" class="nav-link active position-relative">
-                            Giỏ hàng
-                            <span class="position-absolute  translate-middle badge rounded-pill bg-danger">
-                                5
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Lịch sử</a>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-    </div>
-
-</nav>
-<div th:fragment="modalLogout" class="modal" id="logout" tabindex="-1" aria-labelledby="logoutLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="logoutLabel">Đăng xuất</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Bạn chắc chắn muốn đăng xuất ?
-            </div>
-            <div class="modal-footer">
-                <a  class="btn btn-primary" href="/Assignment_SOF3011/LogOut">Yes</a>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Menu -->
-
-<!--    <%&#45;&#45;Star_Body&#45;&#45;%>-->
+    <!--    <%&#45;&#45;Star_Body&#45;&#45;%>-->
     <div class="row">
-<!--        <%&#45;&#45;    Star_Body&#45;&#45;%>-->
+        <div th:if="${messageTC !=null}">
+            <div class="alert alert-success text-center fs-4"
+                 th:text="${messageTC}"></div>
+        </div>
+        <div th:if="${errors != null}">
+            <div class="alert alert-danger text-center fs-4"
+                 th:text="${errors}"></div>
+        </div>
+        <!--        <%&#45;&#45;    Star_Body&#45;&#45;%>-->
         <div class="col-12 col-sm-12 container">
             <h1 th:text="${title}" class="text-primary text-center"></h1>
             <div th:replace="${form}"></div>
             <div th:replace="${table}"></div>
 
         </div>
-<!--        <%&#45;&#45;    End_Body&#45;&#45;%>-->
+        <!--        <%&#45;&#45;    End_Body&#45;&#45;%>-->
 
     </div>
 
-<!--    <%&#45;&#45;EndBody&#45;&#45;%>-->
+    <!--    <%&#45;&#45;EndBody&#45;&#45;%>-->
     <div th:fragment="footer">
         <footer class="row bg-primary opacity-55 m-0">
             <div class="col-sm-3">

@@ -1,16 +1,18 @@
 package edu.poly.shop.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.util.Map;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class _Cart {
-
-    private Map<String, _Orderdetail> cartDetails;
-
-    public Map<String, _Orderdetail> getCartDetails() {
-        return cartDetails;
-    }
-
-    public void setCartDetails(Map<String, _Orderdetail> cartDetails) {
-        this.cartDetails = cartDetails;
-    }
+    private Integer productId;
+    private String namePro;
+    private String image;
+    private BigDecimal price;
+    private int qty = 1;
 }

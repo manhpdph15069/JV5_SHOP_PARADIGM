@@ -3,8 +3,10 @@ package edu.poly.shop.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -32,6 +34,10 @@ public class _Customer {
 
     @Column(name = "status")
     private Integer status =1;
+
+    @CreationTimestamp
+    @Column(name = "create_date")
+    private Timestamp createDate;
 
     @OneToMany(mappedBy = "customer")
     private List<_Order> orders;

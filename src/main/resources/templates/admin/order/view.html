@@ -1,0 +1,99 @@
+<h1 class="text-primary text-center" xmlns="http://www.w3.org/1999/html">Danh sách</h1>
+<div th:if="${ LIST_ORDER  == null}">
+    <p class="alert alert-warning">Không có dữ liệu</p>
+</div>
+
+<div th:if="${ LIST_ORDER  != null}">
+    <table class="table">
+        <thead class="table-dark text-center">
+        <th>Mã HĐ</th>
+        <th>Người mua</th>
+        <th>Sản phẩm</th>
+        <th>Ngày mua</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
+        <th colspan="3">Thao tác</th>
+        </thead>
+        <tbody class="text-center">
+
+        <!--/*@thymesVar id="content" type="lombok"*/-->
+        <tr th:each="o : ${LIST_ORDER.content}">
+            <td th:text="${o.id}"></td>
+            <th:block th:if="${o.user != null}">
+                <td th:text="${o.user.fullname}"></td>
+            </th:block>
+            <th:block th:if="${o.customer != null}">
+                <td th:text="${o.customer.fullname}"></td>
+            </th:block>
+            <td>
+                <a th:href="@{'/admin/order/detail/'+${o.id}}"
+                        class="btn btn-info">Xem</a>
+            </td>
+            <td th:text="${#dates.format(o.createDate, 'dd-MM-yyyy') }"></td>
+            <td  th:text="${#numbers.formatCurrency(o.total)}"></td>
+            <th:block th:switch="${o.status}">
+                <td th:case="1">Chờ</td>
+                <td th:case="2">Xử lý</td>
+                <td th:case="3">Đã xong</td>
+                <td th:case="4">Đã hủy</td>
+            </th:block>
+
+            <td>
+                <a th:href="@{'/admin/order/confirm/'+${o.id}}" class="btn btn-primary">Xác nhận</a>
+            </td>
+            <td>
+                <a th:href="@{'/admin/order/done/'+${o.id}}" class="btn btn-primary">Hoàn thành</a>
+            </td>
+            <td>
+                <!--                        onclick="showConfigUser(this.getAttribute('data-id'),this.getAttribute('data-name'))"-->
+                <a
+                        th:href="@{'/admin/order/cancel/'+${o.id}}"
+                        class="btn btn-danger">
+                    Hủy
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <script>
+        function showConfigUser(id, name) {
+            $('#userName').text(name);
+            $('#yesOption').attr('href', '/admin/user/delete/' + id);
+            $('#configModalID').modal('show');
+        }
+    </script>
+
+    <div class="modal fade" id="configModalID" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông Báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn chắc chắn muốn xóa "<b id="userName"></b>"???
+                </div>
+                <div class="modal-footer">
+
+                    <a id="yesOption" class="btn btn-danger" type="button"> Xác
+                        nhận</a>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div div="row">
+        <ul class="pagination pagination-lg justify-content-end">
+            <li th:each="i :${#numbers.sequence(0,LIST_ORDER.totalPages -1)}" class="page-item">
+                <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0"
+                   th:href="@{'/admin/order/index?pageNumber='+${i}}" th:text="${i +1}"
+                   tabindex="-1"></a>
+            </li>
+        </ul>
+    </div>
+</div>

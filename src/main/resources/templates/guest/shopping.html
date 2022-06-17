@@ -1,98 +1,122 @@
 
-<div class="container py-5">
-    <div class="row">
 
-        <div class="col-lg-3">
-           <a class="text-decoration-none fs-2 text-dark" th:href="@{'/shop/paradigm/'}">Danh mục</a>
+<div class="row">
+    <div class="col-xl-8 col-md-8 col-12 order-2">
+        <main id="main" class="site-main">
+            <header class="woocommerce-products-header">
 
-            <div class="card border-0" style="width: 18rem;">
-                <ul class="list-group  list-group-flush">
-                        <li th:each="c : ${CATEGORIES}" class="list-group-item border-0">
-                            <a class="fs-4 text-dark nav-link"  th:href="@{'/shop/paradigm/?findCid='+${c.id}}" th:text="${c.categoryName}"></a>
-                        </li>
+            </header>
+            <script>
+                function findName(){
+                    window.location = '/shop/paradigm/find?name='+ document.getElementById("findName").value;
+                }
+            </script>
+            <div class="woocommerce-notices-wrapper"></div>
+            <div class="startup-shop-toolbar clearfix">
+                <input id="findName" placeholder="Tìm kiếm">
 
-                </ul>
+                <a  class="btn btn-danger" onclick="findName()">Tìm</a>
+                <select onchange="javascript:hrefFind(this)" name="orderby" class="orderby float-right"
+                        aria-label="Đơn hàng của cửa hàng">
+                    <option th:each="f : ${FIGURES}" th:text="${f.figureName}" th:value="${f.id}"></option>
+                </select>
+
+                <script type="text/javascript">
+                    function hrefFind(id) {
+                        window.location = "http://localhost:8080/shop/paradigm/?findFid=" + id.value;
+                    }
+                </script>
+                <div class="clearfix"></div>
             </div>
-        </div>
-
-        <div class="col-lg-9">
-            <div class="row">
-                <div class="col-md-6">
-                    <ul class="list-inline shop-top-menu pb-3 pt-1">
-                        <li class="list-inline-item">
-<!--                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/shop/paradigm/}">All</a>-->
-                            <form class="d-flex" role="search">
-                                <input height="2px" class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Tìm</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-6 pb-4">
-                    <div class="d-flex">
-                        <select onchange="javascript:hrefFind(this)" class="form-control">
-                             <option  th:each="f : ${FIGURES}" th:text="${f.figureName}" th:value="${f.id}"></option>
-                        </select>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="row">
-                    <div th:each="p : ${LIST_PARADIGM.content}" class="col-md-4">
-                        <div class="card mb-4 product-wap rounded-0">
-                            <div class="card rounded-0">
-                                <img class="card-img rounded-0 img-fluid" th:src="@{'/getimage/'+${p.image}}">
-                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-
-                                        <li><a class="btn btn-success text-white mt-2" th:href="@{'/shop/paradigm/addtoCart/'+${p.id}}"><i
-                                                class="fas fa-cart-plus"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body text-center">
-                                <a href="shop-single.html" class="h3 text-decoration-none" th:text="${p.paradigmName}"></a>
-                                <ul class="text-center w-100 list-unstyled d-flex justify-content-between mb-0">
-<!--                                    <li th:text="${'Nhân vật: '+ p.figure.figureName}"></li>-->
-                                    <li class="pt-2">
-                                        <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                    </li>
-                                </ul>
-<!--                                <ul class="list-unstyled d-flex justify-content-center mb-1">-->
-<!--                                    <li>-->
-<!--                                        <i class="text-warning fa fa-star"></i>-->
-<!--                                        <i class="text-warning fa fa-star"></i>-->
-<!--                                        <i class="text-warning fa fa-star"></i>-->
-<!--                                        <i class="text-muted fa fa-star"></i>-->
-<!--                                        <i class="text-muted fa fa-star"></i>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-                                <p class="text-center mb-0" th:text="${#numbers.formatCurrency(p.price)}"></p>
-                            </div>
+            <ul class="products columns-3">
+                <div th:each="p,state : ${LIST_PARADIGM.content}">
+                    <li th:class="${state.index  ==2 or state.index  ==5}?'product last':'product'">
+                        <div class="product-image">
+                            <th:block th:if="${p.quantity ==0}">
+                                <span class="onsale">Hết hàng!</span>
+                            </th:block>
+                            <a th:href="@{'/shop/paradigm/detail?id='+${p.id}}"
+                               class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                <figure class="hover_hide"><img width="300" height="300"
+                                                                th:src="@{'/getimage/'+${p.image}}"
+                                                                class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                                                alt=""
+                                                                loading="lazy"/><img width="300" height="300"
+                                                                                     th:src="@{'/getimage/'+${p.image}}"
+                                                                                     class="woo-entry-image-secondary"
+                                                                                     alt="[Chính Hãng]"
+                                                                                     loading="lazy"/>
+                                </figure>
+                                </span>
+                            </a>
                         </div>
-                    </div>
-            </div>
-            <div div="row">
-                <ul  class="pagination pagination-lg justify-content-end">
-                    <li th:each="i :${#numbers.sequence(0,LIST_PARADIGM.totalPages -1)}" class="page-item">
-                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" th:href="@{${hrefPage}+${i}}" th:text="${i +1}"
-                           tabindex="-1"></a>
+                        <div class="product_wrap">
+                            <h4 class="woocommerce-loop-product__title"> [[${p.paradigmName}]]
+                            </h4>
+                            <div class="price startup-shop-loop-price">
+                                <del aria-hidden="true"><span
+                                        class="woocommerce-Price-amount amount"></del>
+                                <ins><span class="woocommerce-Price-amount amount"><bdi><span
+                                        class="woocommerce-Price-currencySymbol"></span><th:block
+                                        th:text="${#numbers.formatCurrency(p.price)}"></th:block> </bdi></span>
+                                </ins>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="startup-loop-btn-wrap"><a th:href="@{'/shop/paradigm/addtoCart/'+${p.id}}"
+                                                                  data-quantity="1"
+                                                                  class="btn btn-danger"
+                                                                  data-product_id="${p.id}" data-product_sku=""
+                                                                  aria-label="Thêm &ldquo;[Chính Hãng] Banpresto Nami World Colosseum&rdquo; vào giỏ hàng"
+                                                                  rel="nofollow">Thêm vào giỏ hàng<i
+                                    class="icofont-cart-alt"></i></a></div>
+                        </div>
+                    </li>
+
+                </div>
+
+            </ul>
+        </main>
+    </div>
+    <div class="col-xl-4 col-md-4 col-12 order-1 startup-shop-sidebar">
+
+        <aside id="secondary" class="widget-area">
+            <section id="woocommerce_product_categories-6" class="widget woocommerce widget_product_categories">
+                <h3 class="widget-title"><span>Danh mục sản phẩm</span></h3>
+                <ul th:each="c : ${CATEGORIES}" class="product-categories">
+                    <li class="cat-item cat-item-34"><a th:href="@{'/shop/paradigm/?findCid='+${c.id}}"
+                                                        th:text="${c.categoryName}"></a>
                     </li>
                 </ul>
-            </div>
-        </div>
+            </section>
+        </aside><!-- #secondary -->
     </div>
 </div>
 
 
-<script type="text/javascript">
-    function hrefFind(id){
-        window.location =  "http://localhost:8080/shop/paradigm/?findFid="+id.value;
-    }
-</script>
-<!-- End Content -->
+<div div="row">
+    <ul class="pagination pagination-lg justify-content-center">
+        <th:block th:if="${LIST_PARADIGM.number}>0">
+            <li class="page-item">
+                <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0"
+                   th:href="@{${hrefPage}+${LIST_PARADIGM.number -1}}" th:text="'Pre'"
+                   tabindex="-1"></a>
+            </li>
+        </th:block>
+        <li class="page-item">
+            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0"
+               th:text="${LIST_PARADIGM.number+1}+'|'+${LIST_PARADIGM.totalPages}"
+               tabindex="-1"></a>
+        </li>
+        <th:block th:if="${LIST_PARADIGM.totalPages-1}>${LIST_PARADIGM.number}">
+            <li class="page-item">
+                <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0"
+                   th:href="@{${hrefPage}+${LIST_PARADIGM.number +1}}" th:text="'Next'"
+                   tabindex="-1"></a>
+            </li>
+        </th:block>
+        <!--            <li th:each="i :${#numbers.sequence(0,LIST_PARADIGM.totalPages -1)}" class="page-item">-->
+        <!--                <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" th:href="@{${hrefPage}+${i}}" th:text="${i +1}"-->
+        <!--                   tabindex="-1"></a>-->
+        <!--            </li>-->
+    </ul>
+</div>
